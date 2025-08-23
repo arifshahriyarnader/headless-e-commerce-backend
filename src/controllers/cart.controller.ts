@@ -54,3 +54,26 @@ export const updateCartItemController = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const removeItemFromCartController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { token, itemId } = req.params;
+    const result = await cartServices.removeCartItemService(token, itemId);
+    res.json({
+      message: "Item removed successfully",
+      cartId: result.token,
+      itemId: result.itemId,
+    });
+  } catch (error: any) {
+    if (
+      error.message === "Cart not found" ||
+      error.message === "Item not found in cart"
+    ) {
+      return res.status(404).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};

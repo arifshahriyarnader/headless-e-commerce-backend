@@ -1,9 +1,11 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
+import Cart, { ICart } from "../../models/cart.model";
 import { validate } from "../../middleware";
 import { cartController } from "../../controllers";
 import {
   addItemValidation,
   createOrFetchCartValidation,
+  removeItemValidation,
   updateItemValidation,
 } from "../../validations/cart.validation";
 
@@ -25,6 +27,12 @@ router.put(
   "/:token/items/:itemId",
   validate(updateItemValidation),
   cartController.updateCartItemController
+);
+
+router.delete(
+  "/:token/items/:itemId",
+  validate(removeItemValidation),
+  cartController.removeItemFromCartController
 );
 
 export default router;

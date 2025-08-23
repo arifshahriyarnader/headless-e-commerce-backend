@@ -33,3 +33,10 @@ export const updateItemValidation = z.object({
     quantity: z.number().min(1),
   }),
 });
+
+export const removeItemValidation = z.object({
+  params: z.object({
+    token: z.string(),
+    itemId: objectId,
+  }),
+});

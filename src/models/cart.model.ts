@@ -1,6 +1,7 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface ILineItem {
+  _id?: Types.ObjectId;
   productId: Types.ObjectId;
   variantId: Types.ObjectId;
   quantity: number;
@@ -8,7 +9,7 @@ export interface ILineItem {
 
 export interface ICart extends Document {
   token: string;
-  items: ILineItem[];
+  items: Types.DocumentArray<ILineItem & Document>;
   promoCode?: string | null;
   status: "OPEN" | "CHECKED_OUT";
   createdAt: Date;

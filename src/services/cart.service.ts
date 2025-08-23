@@ -64,3 +64,13 @@ export const updateCartItemService = async (
 
   return cart;
 };
+
+export const removeCartItemService = async (token: string, itemId: string) => {
+  const cart = await Cart.findOne({ token });
+  if (!cart) throw new Error("Cart not found");
+  const itemExists = cart.items.id(itemId);
+  if (!itemExists) throw new Error("Item not found in cart");
+  cart.items.pull(itemId);
+  await cart.save();
+  return { token: cart.token, itemId };
+};
