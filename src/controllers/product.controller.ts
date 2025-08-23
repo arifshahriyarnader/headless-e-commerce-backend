@@ -33,3 +33,19 @@ export const getProductByIdController = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateProductController = async (req: Request, res: Response) => {
+  try {
+    const parsed = ProductValidation.partial().parse(req.body);
+    const updateProduct = await productServices.updateProductService(
+      req.params.id,
+      parsed
+    );
+    if (!updateProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json(updateProduct);
+  } catch (error: any) {
+    res.status(400).json({ error: error.errors || error.message });
+  }
+};

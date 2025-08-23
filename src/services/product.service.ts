@@ -21,3 +21,19 @@ export const getProductByIdService = async (
   }
   return await Product.findById(id);
 };
+
+export const updateProductService = async (
+  id: string,
+  updateData: Partial<IProduct>
+): Promise<IProduct | null> => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("Invalid Product Id");
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    { $set: updateData },
+    { new: true }
+  );
+  return updatedProduct;
+};
