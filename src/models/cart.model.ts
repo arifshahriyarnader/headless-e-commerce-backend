@@ -10,7 +10,7 @@ export interface ILineItem {
 export interface ICart extends Document {
   token: string;
   items: Types.DocumentArray<ILineItem & Document>;
-  promoCode?: string | null;
+  promo?:Types.ObjectId | null;
   status: "OPEN" | "CHECKED_OUT";
   createdAt: Date;
   updatedAt: Date;
@@ -29,7 +29,8 @@ const CartSchema = new Schema<ICart>(
   {
     token: { type: String, required: true, unique: true },
     items: { type: [LineItemSchema], default: [] },
-    promoCode: { type: String, default: null },
+   promo: { type: Schema.Types.ObjectId, ref: "Promo", default: null },
+
     status: { type: String, enum: ["OPEN", "CHECKED_OUT"], default: "OPEN" },
   },
   { timestamps: true }
