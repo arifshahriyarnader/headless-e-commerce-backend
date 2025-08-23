@@ -37,3 +37,13 @@ export const updateProductService = async (
   );
   return updatedProduct;
 };
+
+export const deleteProductService = async (
+  id: string
+): Promise<IProduct | null> => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("Invalid Product Id");
+  }
+  const deleteProduct = await Product.findByIdAndDelete(id);
+  return deleteProduct;
+};

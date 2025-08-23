@@ -49,3 +49,17 @@ export const updateProductController = async (req: Request, res: Response) => {
     res.status(400).json({ error: error.errors || error.message });
   }
 };
+
+export const deleteProductController = async (req: Request, res: Response) => {
+  try {
+    const deleteProduct = await productServices.deleteProductService(
+      req.params.id
+    );
+    if (!deleteProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json({ message: "Product deleted successfully" });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+};
