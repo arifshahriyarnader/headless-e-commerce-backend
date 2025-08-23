@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Product, { IProduct } from "../models/product.model";
 import { ProductInput } from "../validations/product.validation";
 
@@ -8,6 +9,15 @@ export const createProductService = async (
   return await product.save();
 };
 
-export const getAllProductsService=async(): Promise<IProduct[]> =>{
-    return await Product.find()
-}
+export const getAllProductsService = async (): Promise<IProduct[]> => {
+  return await Product.find();
+};
+
+export const getProductByIdService = async (
+  id: string
+): Promise<IProduct | null> => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("Invalid product ID");
+  }
+  return await Product.findById(id);
+};

@@ -20,3 +20,16 @@ export const getAllProductController = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getProductByIdController = async (req: Request, res: Response) => {
+  try {
+    const product = await productServices.getProductByIdService(req.params.id);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+    res.json(product);
+  } catch (error: any) {
+    if (error.message === "Invalid product ID") {
+      return res.status(400).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};
