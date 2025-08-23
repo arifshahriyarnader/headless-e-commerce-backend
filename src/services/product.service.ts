@@ -7,3 +7,7 @@ export const createProductService = async (
   const product = new Product(data);
   return await product.save();
 };
+
+export const getAllProductsService=async(): Promise<IProduct[]> =>{
+    return await Product.find()
+}
