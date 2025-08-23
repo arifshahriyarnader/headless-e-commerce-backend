@@ -13,3 +13,22 @@ export const createOrFetchCartController = async (
     res.status(500).json({ error: error.message });
   }
 };
+
+export const addCartItemController = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params;
+    const { productId, variantId, quantity } = req.body;
+    const cart = await cartServices.addItemToCartService(
+      token,
+      productId,
+      variantId,
+      quantity
+    );
+    res.json(cart);
+  } catch (error: any) {
+    if (error.message === "Cart not found") {
+      return res.status(404).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};
