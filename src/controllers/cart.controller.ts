@@ -32,3 +32,25 @@ export const addCartItemController = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateCartItemController = async (req: Request, res: Response) => {
+  try {
+    const { token, itemId } = req.params;
+    const { quantity } = req.body;
+    const cart = await cartServices.updateCartItemService(
+      token,
+      itemId,
+      quantity
+    );
+
+    res.json(cart);
+  } catch (error: any) {
+    if (
+      error.message === "Cart not found" ||
+      error.message === "Item not found"
+    ) {
+      return res.status(404).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -48,3 +48,19 @@ export const addItemToCartService = async (
   await cart.save();
   return cart;
 };
+
+export const updateCartItemService = async (
+  token: string,
+  itemId: string,
+  quantity: number
+) => {
+  const cart = await Cart.findOne({ token });
+  if (!cart) throw new Error("Cart not found");
+  const item = (cart.items as any).id(itemId);
+  if (!item) throw new Error("Item not found");
+
+  item.quantity = quantity;
+  await cart.save();
+
+  return cart;
+};
