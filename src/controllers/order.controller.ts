@@ -35,3 +35,13 @@ export const updatePaymentController = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getSalesReportController = async (req: Request, res: Response) => {
+  try {
+    const report = await orderServices.getSalesReportService();
+    res.status(200).json(report);
+  } catch (error: any) {
+    console.error("Sales report error:", error);
+    res.status(500).json({ message: "Failed to fetch sales report" });
+  }
+};

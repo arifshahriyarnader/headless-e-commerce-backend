@@ -3,6 +3,7 @@ import { validate } from "../../middleware";
 import { updatePaymentValidation } from "../../validations/order.validation";
 import { orderController } from "../../controllers";
 
+
 const router = Router();
 
 router.patch(
@@ -10,5 +11,7 @@ router.patch(
   validate(updatePaymentValidation),
   orderController.updatePaymentController
 );
+
+router.get("/sales-report", orderController.getSalesReportController);
 
 export default router;

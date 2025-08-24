@@ -22,3 +22,59 @@ export const updatePaymentService = async (
 
   return order;
 };
+
+export const getSalesReportService = async () => {
+  return await Order.aggregate([
+    { $match: { status: "DELIVERED" } },
+
+    { $unwind: "$items" },
+
+    {
+      $group: {
+        _id: {
+          productId: "$items.productId",
+          variantId: "$items.variantId",
+        },
+        totalSales: { $sum: "$items.quantity" },
+      },
+    },
+
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id.productId",
+        foreignField: "_id",
+        as: "product",
+      },
+    },
+    { $unwind: "$product" },
+
+    {
+      $addFields: {
+        variant: {
+          $arrayElemAt: [
+            {
+              $filter: {
+                input: "$product.variants",
+                as: "v",
+                cond: { $eq: ["$$v._id", "$_id.variantId"] },
+              },
+            },
+            0,
+          ],
+        },
+      },
+    },
+
+    {
+      $project: {
+        _id: 0,
+        productId: "$_id.productId",
+        productTitle: "$product.title",
+        variantId: "$_id.variantId",
+        variantTitle: "$variant.title",
+        totalSales: 1,
+      },
+    },
+  ]);
+};
