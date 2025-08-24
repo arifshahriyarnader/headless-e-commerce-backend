@@ -1,0 +1,354 @@
+openapi: 3.0.0
+info:
+  title: Headless E-commerce API
+  version: 1.0.0
+  description: API documentation for the Headless E-commerce project
+
+servers:
+  - url: http://localhost:5000/
+
+tags:
+  - name: Catalog
+    description: Product management APIs
+  - name: Cart
+    description: Cart management APIs
+  - name: Promos
+    description: Promo code management APIs
+  - name: Checkout
+    description: Checkout and Order management APIs
+  - name: Sales Report
+    description: Sales reporting APIs
+
+paths:
+  /product/create-product:
+    post:
+      tags:
+        - Catalog
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                variants:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      sku:
+                        type: string
+                      title:
+                        type: string
+                      price:
+                        type: number
+                      attributes:
+                        type: object
+                        properties:
+                          color:
+                            type: string
+                          size:
+                            type: string
+      responses:
+        "201":
+          description: Product created successfully
+        "400":
+          description: Invalid request
+
+  /product/all:
+    get:
+      tags:
+        - Catalog
+      summary: Get all products
+      responses:
+        "200":
+          description: A list of products
+
+  /product/{id}:
+    get:
+      tags:
+        - Catalog
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product details
+        "404":
+          description: Product not found
+
+    put:
+      tags:
+        - Catalog
+      summary: Update a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: Product updated successfully
+        "404":
+          description: Product not found
+
+    delete:
+      tags:
+        - Catalog
+      summary: Delete a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+
+  /cart/create-fetch:
+    post:
+      tags:
+        - Cart
+      summary: Create a new cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201":
+          description: Cart created
+
+  /cart/{token}/items:
+    post:
+      tags:
+        - Cart
+      summary: Add item to cart
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                variantId:
+                  type: string
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Item added to cart
+        "400":
+          description: Invalid request
+
+  /cart/{token}/items/{itemId}:
+    delete:
+      tags:
+        - Cart
+      summary: Remove item from cart
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Item removed from cart
+        "400":
+          description: Invalid request
+
+    put:
+      tags:
+        - Cart
+      summary: Update item quantity in cart
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Item updated in cart
+        "400":
+          description: Invalid request
+
+  /promo/create-promo:
+    post:
+      tags:
+        - Promos
+      summary: Generate a new promo code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                type:
+                  type: string
+                value:
+                  type: number
+                startsAt:
+                  type: string
+                endsAt:
+                  type: string
+      responses:
+        "201":
+          description: Promo created successfully
+
+  /promo/{token}/apply-promo:
+    post:
+      tags:
+        - Promos
+      summary: Apply promo code to cart
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+      responses:
+        "200":
+          description: Promo applied successfully
+        "400":
+          description: Invalid promo code
+
+  /promo/{promoCode}/usage:
+    get:
+      tags:
+        - Promos
+      summary: Get promo code usage report
+      parameters:
+        - name: promoCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Total usage report
+
+  /promo/all-promos:
+    get:
+      tags:
+        - Promos
+      summary: Get all promo codes
+      responses:
+        "200":
+          description: A list of promo codes
+
+  /checkout:
+    post:
+      tags:
+        - Checkout
+      summary: Checkout and create order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cartId:
+                  type: string
+      responses:
+        "201":
+          description: Order placed successfully
+        "400":
+          description: Checkout failed
+
+  /order/update-payment:
+    patch:
+      tags:
+        - Checkout
+      summary: Update payment status of an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                paymentStatus:
+                  type: string
+      responses:
+        "200":
+          description: Order updated successfully
+        "400":
+          description: Failed to update payment
+
+  /order/sales-report:
+    get:
+      tags:
+        - Sales Report
+      summary: Get sales report
+      responses:
+        "200":
+          description: Total sales report
