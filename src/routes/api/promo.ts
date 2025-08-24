@@ -22,4 +22,6 @@ router.post(
 
 router.get("/:code/usage", promoController.getPromoUsageController);
 
+router.get("/all-promos", promoController.getAllPromosController);
+
 export default router;

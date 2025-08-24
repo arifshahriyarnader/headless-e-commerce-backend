@@ -39,3 +39,13 @@ export const getPromoUsageController = async (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getAllPromosController = async (req: Request, res: Response) => {
+  try {
+    const promos = await promoServices.getAllPromosService();
+    res.status(200).json(promos);
+  } catch (error) {
+    console.error("Error fetching promos:", error);
+    res.status(500).json({ message: "Failed to fetch promos" });
+  }
+};

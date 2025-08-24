@@ -55,3 +55,8 @@ export const getPromoUsageService = async (code: string) => {
     totalUsage: usage[0]?.totalUsage || 0,
   };
 };
+
+
+export const getAllPromosService=async() => {
+  return await Promo.find();
+}
