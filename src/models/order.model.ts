@@ -16,7 +16,7 @@ export interface IOrder extends Document {
   discount: number;
   total: number;
   promoCode?: string;
-  status: "PLACED" | "CANCELLED";
+  status: "PLACED" | "CANCELLED" | "DELIVERED";
   paymentStatus?: "PENDING" | "PAID" | "FAILED";
   createdAt?: Date;
   updatedAt?: Date;
@@ -42,7 +42,7 @@ const OrderSchema = new Schema<IOrder>(
     discount: { type: Number, required: true },
     total: { type: Number, required: true },
     promoCode: String,
-    status: { type: String, enum: ["PLACED", "CANCELLED"], default: "PLACED" },
+    status: { type: String, enum: ["PLACED", "CANCELLED", "DELIVERED"], default: "PLACED" },
     paymentStatus:{type: String, enum: ["PENDING", "PAID", "FAILED"], default: "PENDING"}
   },
   { timestamps: true }
