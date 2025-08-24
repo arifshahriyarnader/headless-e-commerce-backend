@@ -71,6 +71,12 @@ It manages products, carts, promo codes, and orders, including payment processin
     ```bash
     npm run dev
 
+## API Documentation
+- Interactive API documentation is available through Swagger UI.
+- Once the server is running, open the following URL in your browser:
+  ```bash
+  http://localhost:5000/api-docs
+
 
 ## Folder Structure
 
