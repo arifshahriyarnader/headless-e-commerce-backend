@@ -49,3 +49,4 @@ export const getAllPromosController = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to fetch promos" });
   }
 };
+

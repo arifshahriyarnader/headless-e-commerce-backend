@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router} from "express";
 import {
   applyPromoValidation,
   createPromoValidation,
@@ -23,5 +23,7 @@ router.post(
 router.get("/:code/usage", promoController.getPromoUsageController);
 
 router.get("/all-promos", promoController.getAllPromosController);
+
+
 
 export default router;

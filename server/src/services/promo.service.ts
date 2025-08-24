@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Cart, Promo } from "../models";
+import { Cart, Order, Promo } from "../models";
 
 export const createPromoService = async (data: {
   code: string;
@@ -56,7 +56,8 @@ export const getPromoUsageService = async (code: string) => {
   };
 };
 
-
-export const getAllPromosService=async() => {
+export const getAllPromosService = async () => {
   return await Promo.find();
-}
+};
+
+

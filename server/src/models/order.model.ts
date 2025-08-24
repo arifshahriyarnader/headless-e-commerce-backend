@@ -42,8 +42,16 @@ const OrderSchema = new Schema<IOrder>(
     discount: { type: Number, required: true },
     total: { type: Number, required: true },
     promoCode: String,
-    status: { type: String, enum: ["PLACED", "CANCELLED", "DELIVERED"], default: "PLACED" },
-    paymentStatus:{type: String, enum: ["PENDING", "PAID", "FAILED"], default: "PENDING"}
+    status: {
+      type: String,
+      enum: ["PLACED", "CANCELLED", "DELIVERED"],
+      default: "PLACED",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["PENDING", "PAID", "FAILED"],
+      default: "PENDING",
+    },
   },
   { timestamps: true }
 );
