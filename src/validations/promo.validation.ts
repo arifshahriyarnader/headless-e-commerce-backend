@@ -10,3 +10,8 @@ export const createPromoValidation = z.object({
     active: z.boolean().optional(),
   }),
 });
+
+export const applyPromoValidation = z.object({
+  body: z.object({ code: z.string().min(1) }),
+  params: z.object({ token: z.string().uuid() }),
+});

@@ -1,4 +1,5 @@
-import { Promo } from "../models";
+import { Types } from "mongoose";
+import { Cart, Promo } from "../models";
 
 export const createPromoService = async (data: {
   code: string;
@@ -22,4 +23,22 @@ export const createPromoService = async (data: {
   });
 
   return promo;
+};
+
+export const applyPromoToCartService = async (token: string, code: string) => {
+  const cart = await Cart.findOne({ token });
+  if (!cart) throw new Error("Cart not found");
+  const promo = await Promo.findOne({
+    code: new RegExp(`^${code}$`, "i"),
+    active: true,
+  });
+  if (!promo) throw new Error("Promo not found or inactive");
+  const now = new Date();
+  if (now < promo.startsAt || now > promo.endsAt) {
+    throw new Error("Promo code expired or not yet valid");
+  }
+  cart.promo = promo._id as Types.ObjectId;
+  await cart.save();
+
+  return cart.populate("promo");
 };

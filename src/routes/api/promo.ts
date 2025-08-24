@@ -1,5 +1,8 @@
 import { Router, Request, Response } from "express";
-import { createPromoValidation } from "../../validations/promo.validation";
+import {
+  applyPromoValidation,
+  createPromoValidation,
+} from "../../validations/promo.validation";
 import { validate } from "../../middleware";
 import { promoController } from "../../controllers";
 
@@ -9,6 +12,12 @@ router.post(
   "/create-promo",
   validate(createPromoValidation),
   promoController.createPromoController
+);
+
+router.post(
+  "/:token/apply-promo",
+  validate(applyPromoValidation),
+  promoController.applyPromoToCartController
 );
 
 export default router;
