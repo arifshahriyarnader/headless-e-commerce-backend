@@ -10,18 +10,32 @@ export const createPromoController = async (req: Request, res: Response) => {
   }
 };
 
-export const applyPromoToCartController = async(req:Request, res:Response) => {
-  try{
+export const applyPromoToCartController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
     const { token } = req.params;
-      const { code } = req.body;
-      const updatedCart= await promoServices.applyPromoToCartService(token,code)
-      res.json({
+    const { code } = req.body;
+    const updatedCart = await promoServices.applyPromoToCartService(
+      token,
+      code
+    );
+    res.json({
       message: "Promo applied successfully",
       cart: updatedCart,
     });
-
-  }
-  catch(error:any){
+  } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
-}
+};
+
+export const getPromoUsageController = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const result = await promoServices.getPromoUsageService(code);
+    res.json(result);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+};

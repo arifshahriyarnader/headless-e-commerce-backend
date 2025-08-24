@@ -20,4 +20,6 @@ router.post(
   promoController.applyPromoToCartController
 );
 
+router.get("/:code/usage", promoController.getPromoUsageController);
+
 export default router;

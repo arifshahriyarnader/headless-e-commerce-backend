@@ -42,3 +42,16 @@ export const applyPromoToCartService = async (token: string, code: string) => {
 
   return cart.populate("promo");
 };
+
+export const getPromoUsageService = async (code: string) => {
+  const promo = await Promo.findOne({ code: code.toUpperCase() });
+  if (!promo) throw new Error("Promo not found");
+  const usage = await Cart.aggregate([
+    { $match: { promo: promo._id } },
+    { $count: "totalUsage" },
+  ]);
+  return {
+    code: promo.code,
+    totalUsage: usage[0]?.totalUsage || 0,
+  };
+};
