@@ -68,7 +68,7 @@ It manages products, carts, promo codes, and orders, including payment processin
     MONGODB_URI=your_mongodb_connection_string
 
 5. Start the server
-    ```
+    ```bash
     npm run dev
 
 
@@ -83,3 +83,6 @@ It manages products, carts, promo codes, and orders, including payment processin
         routes/api
         services/
         validations/
+
+
+# Thank You.
